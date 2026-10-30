@@ -197,7 +197,7 @@ newServer({
   tcpRecvTimeout=${DNS_TIMEOUT},
   maxCheckFailures=${HEALTH_CHECK_MAX_FAIL},
   checkInterval=${HEALTH_CHECK_INTERVAL},
-  checkName="${HEALTH_CHECK_URL}.",
+  checkName="${HEALTH_CHECK_HOST}.",
   mustResolve=true,
   useClientSubnet=true,
   rise=${HEALTH_CHECK_MININUM_SUCESS}

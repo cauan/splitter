@@ -171,7 +171,9 @@ backend TOR_HTTP_SOCKS_INSTANCE
   	fi
     )
     #option tcp-check
-    option httpchk GET https://${HEALTH_CHECK_URL} HTTP/1.1\r\nHost:\ $(echo "${HEALTH_CHECK_URL}" | cut -d ":" -f 2 | sed 's|/||g')\r\nUser-Agent:\ $(echo "${SPOOFED_USER_AGENT}")\r\nAccept:\ text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language:\ en-US,en;q=0.5\r\nAccept-Encoding:\ gzip,\ deflate\r\nConnection:\ keep-alive\r\nUpgrade-Insecure-Requests:\ 1
+    option httpchk
+    http-check send meth CONNECT uri ${HEALTH_CHECK_HOST}:${HEALTH_CHECK_PORT} ver HTTP/1.1 hdr Host ${HEALTH_CHECK_HOST}:${HEALTH_CHECK_PORT}
+    http-check expect status 200
 " > "${TOR_TEMP_FILES}/haproxy_TOR_HTTP_PROXY.txt"
 
 
