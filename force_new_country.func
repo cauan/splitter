@@ -189,12 +189,12 @@ change_country_on_the_fly () {
 				## entry
 				if [ "${COUNTRY_LIST_CONTROLS}" = "entry" ]; then
 					echo "EntryNodes ${NEXT_COUNTRY}" > "${TOR_TEMP_FILES}/temp_config_tor_${TOR_CURRENT_INSTANCE}.tmp"
-					echo "ExitNodes $(echo "${EXIT_COUNTRIES}" | sed "s|${NEXT_COUNTRY},||g")" >> "${TOR_TEMP_FILES}/temp_config_tor_${TOR_CURRENT_INSTANCE}.tmp"
+					echo "ExitNodes $(echo "${EXIT_COUNTRIES}," | sed "s|${NEXT_COUNTRY},||g" | sed 's|,$||')" >> "${TOR_TEMP_FILES}/temp_config_tor_${TOR_CURRENT_INSTANCE}.tmp"
 					echo "ExcludeNodes ${BLACKLIST_COUNTRIES}" >> "${TOR_TEMP_FILES}/temp_config_tor_${TOR_CURRENT_INSTANCE}.tmp"
 				fi
 				## exit
 				if [ "${COUNTRY_LIST_CONTROLS}" = "exit" ]; then
-					echo "EntryNodes $(echo "${ENTRY_COUNTRIES}" | sed "s|${NEXT_COUNTRY},||g")" > "${TOR_TEMP_FILES}/temp_config_tor_${TOR_CURRENT_INSTANCE}.tmp"
+					echo "EntryNodes $(echo "${ENTRY_COUNTRIES}," | sed "s|${NEXT_COUNTRY},||g" | sed 's|,$||')" > "${TOR_TEMP_FILES}/temp_config_tor_${TOR_CURRENT_INSTANCE}.tmp"
 					echo "ExitNodes ${NEXT_COUNTRY}" >> "${TOR_TEMP_FILES}/temp_config_tor_${TOR_CURRENT_INSTANCE}.tmp"
 					echo "ExcludeNodes ${BLACKLIST_COUNTRIES}" >> "${TOR_TEMP_FILES}/temp_config_tor_${TOR_CURRENT_INSTANCE}.tmp"
 				fi
@@ -202,7 +202,7 @@ change_country_on_the_fly () {
 				if [ "${COUNTRY_LIST_CONTROLS}" = "speed" ]; then
 					echo "EntryNodes ${NEXT_COUNTRY}" > "${TOR_TEMP_FILES}/temp_config_tor_${TOR_CURRENT_INSTANCE}.tmp"
 					echo "ExitNodes ${NEXT_COUNTRY}" >> "${TOR_TEMP_FILES}/temp_config_tor_${TOR_CURRENT_INSTANCE}.tmp"
-					echo "ExcludeNodes ${BLACKLIST_COUNTRIES},$(echo "${ACCEPTED_COUNTRIES}" | sed "s|${NEXT_COUNTRY},||g")" >> "${TOR_TEMP_FILES}/temp_config_tor_${TOR_CURRENT_INSTANCE}.tmp"
+					echo "ExcludeNodes ${BLACKLIST_COUNTRIES},$(echo "${ACCEPTED_COUNTRIES}," | sed "s|${NEXT_COUNTRY},||g" | sed 's|,$||')" >> "${TOR_TEMP_FILES}/temp_config_tor_${TOR_CURRENT_INSTANCE}.tmp"
 				fi
 				## none
 				if [ "${COUNTRY_LIST_CONTROLS}" = "none" ]; then

@@ -61,12 +61,12 @@ boot_tor_instances () {
 			## ENTRY-NODES
 			if [ "${COUNTRY_LIST_CONTROLS}" = "entry" ]; then
 				echo "EntryNodes ${CURRENT_COUNTRY}" > ${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}/tor_${TOR_CURRENT_INSTANCE}.cfg
-				echo "ExitNodes $(echo "${EXIT_COUNTRIES}" | sed "s|${CURRENT_COUNTRY},||g")" >> ${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}/tor_${TOR_CURRENT_INSTANCE}.cfg
+				echo "ExitNodes $(echo "${EXIT_COUNTRIES}," | sed "s|${CURRENT_COUNTRY},||g" | sed 's|,$||')" >> ${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}/tor_${TOR_CURRENT_INSTANCE}.cfg
 				echo "ExcludeNodes ${BLACKLIST_COUNTRIES}" >> ${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}/tor_${TOR_CURRENT_INSTANCE}.cfg
 			fi
 			## EXIT-NODES
 			if [ "${COUNTRY_LIST_CONTROLS}" = "exit" ]; then
-				echo "EntryNodes $(echo "${ENTRY_COUNTRIES}" | sed "s|${CURRENT_COUNTRY},||g")" > ${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}/tor_${TOR_CURRENT_INSTANCE}.cfg
+				echo "EntryNodes $(echo "${ENTRY_COUNTRIES}," | sed "s|${CURRENT_COUNTRY},||g" | sed 's|,$||')" > ${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}/tor_${TOR_CURRENT_INSTANCE}.cfg
 				echo "ExitNodes ${CURRENT_COUNTRY}" >> ${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}/tor_${TOR_CURRENT_INSTANCE}.cfg
 				CURRENT_COUNTRY_FLAG=$(echo "${CURRENT_COUNTRY}" | sed 's|{||g' | sed 's|}||g')
 				echo "ExcludeNodes ${BLACKLIST_COUNTRIES}" >> ${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}/tor_${TOR_CURRENT_INSTANCE}.cfg
@@ -76,7 +76,7 @@ boot_tor_instances () {
 				echo "EntryNodes ${CURRENT_COUNTRY}" > ${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}/tor_${TOR_CURRENT_INSTANCE}.cfg
 				echo "ExitNodes ${CURRENT_COUNTRY}" >> ${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}/tor_${TOR_CURRENT_INSTANCE}.cfg
 				CURRENT_COUNTRY_FLAG=$(echo "${CURRENT_COUNTRY}" | sed 's|{||g' | sed 's|}||g')
-				echo "ExcludeNodes ${BLACKLIST_COUNTRIES},$(echo "${ACCEPTED_COUNTRIES}" | sed "s|${CURRENT_COUNTRY},||g")" >> ${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}/tor_${TOR_CURRENT_INSTANCE}.cfg
+				echo "ExcludeNodes ${BLACKLIST_COUNTRIES},$(echo "${ACCEPTED_COUNTRIES}," | sed "s|${CURRENT_COUNTRY},||g" | sed 's|,$||')" >> ${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}/tor_${TOR_CURRENT_INSTANCE}.cfg
 			fi
 			##NO_ENFORCE
 			if [ "${COUNTRY_LIST_CONTROLS}" = "none" ]; then
