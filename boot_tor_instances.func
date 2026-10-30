@@ -186,6 +186,20 @@ sleep 2
 #Append the base_config_tor to the final configuration which already have the country selection
 cat "${TOR_TEMP_FILES}/base_config_tor_${TOR_CURRENT_INSTANCE}.cfg" >> "${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}/tor_${TOR_CURRENT_INSTANCE}.cfg"
 
+### Verify the final instance config BEFORE launching it and BEFORE any side-artifacts
+### (dnsdist/privoxy/haproxy-backend/expect) are generated for it. A failed instance is
+### skipped loudly instead of being launched into an eternal pid-watch.
+TOR_CFG_FILE="${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}/tor_${TOR_CURRENT_INSTANCE}.cfg"
+VERIFY_OUTPUT="$(${TORPATH} --verify-config -f "${TOR_CFG_FILE}" 2>&1)"
+VERIFY_EXIT="$?"
+if [ "${VERIFY_EXIT}" != "0" ]; then
+    echo "################################################################"
+    echo "SPLITTER: TOR instance ${TOR_CURRENT_INSTANCE} FAILED config verification - instance NOT started:"
+    echo "${VERIFY_OUTPUT}"
+    echo "################################################################"
+    continue
+fi
+
 ### DNSDIST CONFIG ###
 cat <<EOF >> "${TOR_TEMP_FILES}/dnsdist.conf"
 newServer({
