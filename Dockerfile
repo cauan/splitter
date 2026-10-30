@@ -20,12 +20,12 @@
 #####    SPLITTER v.0.2.4    #####
 ##################################
 # 	== DEPENDENCIES:==
-# 	1) tor 	 	 	       --> version 0.4.6.7 or earlier - https://www.torproject.org/ - https://github.com/torproject/tor
-# 	2) privoxy 	 	     --> version 3.0.26  or earlier - http://www.privoxy.org/
-# 	3) haproxy 	 	     --> version 2.0 or earlier - https://www.haproxy.org/
-# 	4) proxychains-ng  --> version 4.13-4  or earlier - https://sourceforge.net/projects/proxychains/
-# 	5) expect		       --> version 5.45	   or earlier - https://sourceforge.net/projects/expect/
-#	  6) dnsdist 		     --> version 1.1.0   or earlier - https://dnsdist.org/index.html
+# 	1) tor 	 	 	       --> version 0.4.9.11 (Debian bookworm) - https://www.torproject.org/ - https://github.com/torproject/tor
+# 	2) privoxy 	 	     --> version 3.0.34  (Debian bookworm) - http://www.privoxy.org/
+# 	3) haproxy 	 	     --> version 2.6.12  (Debian bookworm) - https://www.haproxy.org/
+# 	4) proxychains-ng  --> version 4.16  (Debian bookworm) - https://sourceforge.net/projects/proxychains/
+# 	5) expect		       --> version 5.45.4	 (Debian bookworm) - https://sourceforge.net/projects/expect/
+#	  6) dnsdist 		     --> version 1.7.3   (Debian bookworm)  - https://dnsdist.org/index.html
 #
 #
 # To build this file just use:
@@ -38,12 +38,12 @@
 # docker run -d -it --sysctl 'net.ipv4.ip_forward=1' -p <docker_interface_ip>:53:5353 -p <docker_interface_ip>:53:5353/udp -p 127.0.0.1:53:5353 -p 127.0.0.1:53:5353/udp -p <docker_interface_ip>:63536:63536 -p 127.0.0.1:63536:63536 -p <docker_interface_ip>:63537:63537 -p <127.0.0.1>:63537:63537 -p <docker_interface_ip>:63538:63538 -p 127.0.0.1:63538:63538 -p <docker_interface_ip>:63539:63539 -p 127.0.0.1:63539:63539 --cap-add=NET_ADMIN -v splitter_v.0.2.3/:/splitter --name splitter_v.0.2.3 splitter:local /bin/bash
 #=============
 
-FROM debian:bullseye
+FROM debian:bookworm
 
 LABEL maintainer="Gr1nch - gr1nchdc@proton.me"
 
 # Add debian backports repo for wireguard packages
-RUN echo "deb http://deb.debian.org/debian/ bullseye-backports main" > /etc/apt/sources.list.d/backports.list
+RUN echo "deb http://deb.debian.org/debian/ bookworm-backports main" > /etc/apt/sources.list.d/backports.list
 
 # Update the Debian
 RUN apt clean && apt update && apt full-upgrade -y && apt autoremove -y && apt clean
