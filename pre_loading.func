@@ -110,6 +110,11 @@ listen stats
     stats refresh 2s
 " > "${MASTER_PROXY_CFG}"
 
+#Persist the credential actually baked into the HAProxy stats config so status.func can
+#display it truthfully (status.func re-sources settings.cfg, which re-rolls RAND_PASS).
+( umask 077 && printf '%s' "${MASTER_PROXY_STAT_PWD}" > "${TOR_TEMP_FILES}/.stats_cred" )
+chmod 600 "${TOR_TEMP_FILES}/.stats_cred" 2> /dev/null
+
 #This File holds the HAProxy Backend SOCKS Proxies
 echo "
 frontend TOR_SOCKS_INSTANCES

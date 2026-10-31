@@ -10,7 +10,7 @@
 #	E-Mail: rener.silva@protonmail.com
 #	PGP Key ID: 0x65f912ed59949f8e
 #	PGP Key FingerPrint: 7B7A 8E83 82D3 DACD 4B3B  CFE0 65F9 12ED 5994 9F8E
-#	PGP KEY Download: https://pgp.mit.edu/pks/lookup?op=get&search=0x65F912ED59949F8E
+#	PGP KEY Download: https://pgp.mit.edu/pks/lookup?op=get&search=0x65F912ED5994 9F8E
 #
 #       BSD License - Do whatever you want with this script, but take the responsibility!
 source settings.cfg
@@ -23,11 +23,33 @@ if [ "${SHOW_STATUS}" == "yes" ]; then
           echo "--------------------------------------------"
           echo "Status URL      : http://127.0.0.1:${MASTER_PROXY_STAT_PORT}${MASTER_PROXY_STAT_URI}"
           echo "User ID         : ${USER_ID}"
-          echo "Random Password : ${MASTER_PROXY_STAT_PWD}"
+          #Print the credential actually baked into the running HAProxy config (persisted by
+          #pre_loading.func). Do NOT print MASTER_PROXY_STAT_PWD here: this process re-sourced
+          #settings.cfg, which re-rolls RAND_PASS and would display a password that never matches.
+          if [ -r "${TOR_TEMP_FILES}/.stats_cred" ]; then
+              echo "Random Password : $(cat "${TOR_TEMP_FILES}/.stats_cred")"
+          else
+              echo "Random Password : (credential file missing)"
+          fi
           echo -n "Status - "
           date
           echo "--------------------------------------------"
-          cat "${TOR_TEMP_FILES}"/instances_countries_list.txt
+          #List instances with a liveness check: a line only reflects a registered instance,
+          #not a running one (tor writes its pid file before bootstrap; dead processes used
+          #to be listed as if alive). Read-only: this function never writes the list.
+          if [ -r "${TOR_TEMP_FILES}/instances_countries_list.txt" ]; then
+              while IFS= read -r LIST_LINE; do
+                  [ -z "${LIST_LINE}" ] && continue
+                  LIST_PID="$(echo "${LIST_LINE}" | cut -d ',' -f 1 | tr -d '_')"
+                  LIST_INSTANCE="$(echo "${LIST_LINE}" | cut -d ',' -f 2)"
+                  LIST_SOCKS_PORT="$(grep -m1 '^SocksPort' "${TOR_TEMP_FILES}/base_config_tor_${LIST_INSTANCE}.cfg" 2> /dev/null | sed 's|.*:||' | cut -d ' ' -f 1)"
+                  if [ -n "${LIST_PID}" ] && [ -d "/proc/${LIST_PID}" ] && [ -n "${LIST_SOCKS_PORT}" ] && netstat -ln 2> /dev/null | grep -q ":${LIST_SOCKS_PORT} "; then
+                      echo "${LIST_LINE}"
+                  else
+                      echo "${LIST_LINE}  <== DOWN (process/port not responding)"
+                  fi
+              done < "${TOR_TEMP_FILES}/instances_countries_list.txt"
+          fi
           echo "--------------------------------------------"
           echo "Next instances status update in ${SHOW_CURRENT_INSTANCE_STATUS_EVERY} seconds..."
       fi
