@@ -171,6 +171,14 @@ rm "${TOR_TEMP_FILES}/haproxy_TOR_SOCKS_PROXY.txt"
 rm "${TOR_TEMP_FILES}/haproxy_socks_backend.txt"
 
 # 11) Executing the MASTER PROXY
+#Pre-flight: haproxy dies silently on a bad config when daemonized — surface it loudly.
+VERIFY_HAPROXY="$(${HAPROXY_PATH} -c -f "${MASTER_PROXY_CFG}" 2>&1)"
+if [ "$?" != "0" ]; then
+    echo "################################################################"
+    echo "SPLITTER: HAProxy config verification FAILED - the master proxy may not serve traffic:"
+    echo "${VERIFY_HAPROXY}" | tail -15
+    echo "################################################################"
+fi
 ${HAPROXY_PATH} -f "${MASTER_PROXY_CFG}" > /dev/null 2>&1 &
 
 
