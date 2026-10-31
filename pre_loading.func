@@ -79,10 +79,6 @@ echo "global
 defaults
     timeout check ${MINIMUM_TIMEOUT}s
 
-userlist L1
-    group G1 users ${USER_ID}
-    user ${USER_ID} insecure-password ${MASTER_PROXY_PASSWORD}
-
 resolvers tor_dns
    nameserver tor_dns1 127.0.0.1:${DNSDIST_SERVER_PORT}
    resolve_retries ${RETRIES}
