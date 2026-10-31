@@ -89,7 +89,7 @@ boot_tor_instances () {
 		fi
 
 		#Writing the BASE TOR CONFIG FILE
-		echo "SocksPort ${LISTEN_ADDR}:${TOR_CURRENT_SOCKS_PORT} #IsolateClientAddr IsolateClientProtocol IsolateDestAddr IsolateDestPort
+		echo "SocksPort ${LISTEN_ADDR}:${TOR_CURRENT_SOCKS_PORT} IsolateDestAddr
 #HTTPTunnelPort ${LISTEN_ADDR}:${TOR_CURRENT_HTTP_PORT} #IsolateClientAddr IsolateClientProtocol IsolateDestAddr IsolateDestPort
 #TransPort ${LISTEN_ADDR}:${TOR_CURRENT_TransPort} #IsolateClientAddr IsolateClientProtocol IsolateDestAddr IsolateDestPort
 #TransProxyType default
@@ -234,7 +234,7 @@ enforce-blocks 0
 keep-alive-timeout ${PRIVOXY_TIMEOUT}
 default-server-timeout ${PRIVOXY_TIMEOUT}
 socket-timeout ${PRIVOXY_TIMEOUT}
-connection-sharing 1
+connection-sharing 0
 buffer-limit 4096
 listen-address  ${PRIVOXY_LISTEN}:${PRIVOXY_CURRENT_PORT}
 forward-socks5t / ${LISTEN_ADDR}:${TOR_CURRENT_SOCKS_PORT} ." > "${PRIVOXY_FILE}${PRIVOXY_CURRENT_INSTANCE}.cfg"
