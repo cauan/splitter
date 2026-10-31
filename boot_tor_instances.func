@@ -94,7 +94,7 @@ boot_tor_instances () {
 #TransPort ${LISTEN_ADDR}:${TOR_CURRENT_TransPort} #IsolateClientAddr IsolateClientProtocol IsolateDestAddr IsolateDestPort
 #TransProxyType default
 #This LOG options do not compromise your security.
-#Log notice file ${LOGDIR}/${LOGNAME}${TOR_CURRENT_INSTANCE}.log
+Log notice file ${LOGDIR}/${LOGNAME}${TOR_CURRENT_INSTANCE}.log
 #This options INFO and DEBUG can put in the log sensitive data.
 #avoid to use it if possible, or just use for debug.
 #Log info file ${LOGDIR}/${LOGNAME}${TOR_CURRENT_INSTANCE}.log
