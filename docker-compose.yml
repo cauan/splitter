@@ -1,8 +1,8 @@
-version: '3.8'
 services:
     splitter:
         build: .
-        image: splitter:local
+        #image: splitter:local
+        image: cauan/splitter
         tty: true
         # -re exit pins the EXIT countries (GeoIP-bypass use case: target always sees one of
         # your chosen countries). For the paper's security default use "-re entry" instead:
