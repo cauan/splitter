@@ -16,6 +16,13 @@
 #       You are responsible for your actions.
 #       The creator assume no liability and is not responsible for any misuse or damage.
 
+#Fail loudly if iptables is unavailable (missing NET_ADMIN cap) instead of silently
+#running with an incomplete firewall — the default-DROP policies below require it.
+if ! iptables -L > /dev/null 2>&1; then
+    echo "SPLITTER FATAL: iptables unavailable (is cap_add: NET_ADMIN granted to the container?). Firewall NOT applied - aborting."
+    return 1 2> /dev/null || exit 1
+fi
+
 #Clean Docker firewall
 iptables -F
 iptables -X

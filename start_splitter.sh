@@ -48,6 +48,9 @@ while getopts ":i:c:r:h" option; do
 done
 
 cd /splitter
+#NOTE: iptables_firewall.func requires the container to hold cap_add: NET_ADMIN. It is
+#DISABLED by default and the compose file no longer grants NET_ADMIN — re-add the cap
+#before enabling this, or every iptables call fails and the container runs unprotected.
 #/bin/bash iptables_firewall.func
 
 su -l splitter -c "cd /splitter; /bin/bash -c 'cd /splitter; /splitter/splitter.sh -i ${TOR_INSTANCES} -c ${COUNTRIES} -re ${COUNTRY_LIST_CONTROLS}'"

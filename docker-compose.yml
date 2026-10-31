@@ -4,17 +4,22 @@ services:
         build: .
         image: splitter:local
         tty: true
-        command: -i 1 -c 8
+        # -re exit pins the EXIT countries (GeoIP-bypass use case: target always sees one of
+        # your chosen countries). For the paper's security default use "-re entry" instead:
+        # entry/guard countries pinned, exits roam over the other accepted countries.
+        command: -i 1 -c 8 -re exit
         sysctls:
             - net.ipv6.conf.all.disable_ipv6=1
-            - net.ipv4.ip_forward=1
+        # OPERATOR CHOICE: publishing on 0.0.0.0 exposes an UNAUTHENTICATED Tor open proxy
+        # and the stats page (farm composition, per-instance countries) to the whole LAN.
+        # Bind to "127.0.0.1:<port>:<port>" if only local access is needed.
         ports:
           - "0.0.0.0:63536:63536"
           - "0.0.0.0:63537:63537"
           - "63539:63539"
         container_name: splitter
-        cap_add:
-          - NET_ADMIN
+        # NET_ADMIN and net.ipv4.ip_forward were REMOVED: they served only the disabled
+        # iptables_firewall.func (start_splitter.sh). Re-add both if you enable that firewall.
         deploy:
           restart_policy:
             condition: on-failure
