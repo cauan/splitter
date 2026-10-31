@@ -1,7 +1,7 @@
         ############################################
         ##########                        ##########
         ##########         SPLITTER       ##########
-        ##########        Ver: 0.2.4      ##########
+        ##########        Ver: 0.3.0      ##########
         ##########                        ##########
         ############################################
 
@@ -56,12 +56,12 @@ This process will compile and create the DOCKER IMAGE of SPLITTER.
 ================================================================================
 
 2) START THE SPLITTER DOCKER CONTAINER:
-Considering that your SPLITTER folder is: splitter_v.0.2.4
+Considering that your SPLITTER folder is: splitter_v.0.3.0
 
 # You can use the following to run the Docker Container:
-docker container stop splitter_v.0.2.4 2> /dev/null
-docker container rm splitter_v.0.2.4 2> /dev/null
-docker run -it -p 53:5353 -p 53:5353/udp -p 63536:63536 -p 63537:63537 -p 63539:63539 --cap-add=NET_ADMIN -v $(pwd)/splitter_v.0.2.4/:/splitter --name splitter_v.0.2.4 splitter:local /bin/bash
+docker container stop splitter_v.0.3.0 2> /dev/null
+docker container rm splitter_v.0.3.0 2> /dev/null
+docker run -it -p 53:5353 -p 53:5353/udp -p 63536:63536 -p 63537:63537 -p 63539:63539 --cap-add=NET_ADMIN -v $(pwd)/splitter_v.0.3.0/:/splitter --name splitter_v.0.3.0 splitter:local /bin/bash
 
 #PS: Adjust the line above fixing the path were you save the SPLITTER source code.
 

@@ -2,7 +2,7 @@
 #              ###########################################
 #              ##########                       ##########
 #              ##########        SPLITTER       ##########
-#              ##########       Ver: 0.2.4      ##########
+#              ##########       Ver: 0.3.0      ##########
 #              ##########                       ##########
 #              ###########################################
 #
@@ -29,20 +29,20 @@
 INSTALLED=$(docker image ls | grep 'splitter' > /dev/null;echo $?)
 if [ "${INSTALLED}" == "0" ]; then
     #Stop and Remove previous splitter docker container:
-    docker container stop splitter_v.0.2.4 > /dev/null 2&>1
-    docker container rm splitter_v.0.2.4 > /dev/null 2&>1
+    docker container stop splitter_v.0.3.0 > /dev/null 2&>1
+    docker container rm splitter_v.0.3.0 > /dev/null 2&>1
     #
     #Start the new container
-    docker run -it -p 53:5353 -p 53:5353/udp -p 63536:63536 -p 63537:63537 -p 63539:63539 -v $(pwd):/splitter --name splitter_v.0.2.4 splitter:local /bin/bash
+    docker run -it -p 53:5353 -p 53:5353/udp -p 63536:63536 -p 63537:63537 -p 63539:63539 -v $(pwd):/splitter --name splitter_v.0.3.0 splitter:local /bin/bash
 
 else # IF THE SPLITTER DOCKER IMAGE NOT FOUND
      #Compile the Docker IMAGE
      docker build -t splitter:local .
 
      #Stop and Remove previous splitter docker container:
-     docker container stop splitter_v.0.2.4 > /dev/null 2&>1
-     docker container rm splitter_v.0.2.4 > /dev/null 2&>1
+     docker container stop splitter_v.0.3.0 > /dev/null 2&>1
+     docker container rm splitter_v.0.3.0 > /dev/null 2&>1
      #
      #Start the new container
-     docker run -it -p 53:5353 -p 53:5353/udp -p 63536:63536 -p 63537:63537 -p 63539:63539 -v $(pwd):/splitter --name splitter_v.0.2.4 splitter:local /bin/bash
+     docker run -it -p 53:5353 -p 53:5353/udp -p 63536:63536 -p 63537:63537 -p 63539:63539 -v $(pwd):/splitter --name splitter_v.0.3.0 splitter:local /bin/bash
 fi

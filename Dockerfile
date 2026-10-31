@@ -2,7 +2,7 @@
 #              ###########################################
 #              ##########                       ##########
 #              ##########        SPLITTER       ##########
-#              ##########       Ver: 0.2.4      ##########
+#              ##########       Ver: 0.3.0      ##########
 #              ##########                       ##########
 #              ###########################################
 #
@@ -17,7 +17,7 @@
 #       The creator assume no liability and is not responsible for any misuse or damage.
 
 ##################################
-#####    SPLITTER v.0.2.4    #####
+#####    SPLITTER v.0.3.0    #####
 ##################################
 # 	== DEPENDENCIES:==
 # 	1) tor 	 	 	       --> version 0.4.9.11 (Debian bookworm) - https://www.torproject.org/ - https://github.com/torproject/tor
