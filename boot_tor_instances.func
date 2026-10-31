@@ -169,7 +169,6 @@ TestSocks ${TestSocks}
 AllowNonRFC953Hostnames ${AllowNonRFC953Hostnames}
 ClientRejectInternalAddresses ${ClientRejectInternalAddresses}
 DownloadExtraInfo ${DownloadExtraInfo}
-OptimisticData ${OptimisticData}
 DNSPort ${TOR_DNS_LISTEN}:${DNSPORT}
 " > "${TOR_TEMP_FILES}/base_config_tor_${TOR_CURRENT_INSTANCE}.cfg"
 
