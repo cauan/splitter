@@ -40,14 +40,14 @@ echo " Help:
        The options for the (R)elay (E)nforcing are:
        1) entry: Sets a specific country as ENTRY relay
                  and will use a different country as EXIT relay.
-                 The load balancing algorithm is: Round Robin.
+                 The load balancing algorithm is: Least Connections (leastconn).
 
        2) exit:  Sets a specific country as EXIT relay
                  and will use a different country as ENTRY relay.
                  This option give you the control of the EXIT relays and
                  could be used to bypass GeoIP protections.
                  Whoever reduces the number of EXIT realys available.
-                 The load balancing algorithm is: Round Robin.
+                 The load balancing algorithm is: Least Connections (leastconn).
 
        3) speed: This option is the fastest option because reduces the
                  delay between the hops of relays inside TOR network by
@@ -56,7 +56,7 @@ echo " Help:
                  middle relay will hopefully also be selected inside the
                  same country.
                  The load balancing algorithm for this option is:
-                 Least Connections Round Robin.
+                 Least Connections (leastconn).
                  This algorithm sends the next request for the instances
                  with least number of request in the queue but still
                  performing the load balancing between all other instances.
@@ -79,12 +79,12 @@ Please install all dependencies and configure the settings.cfg file
 with the path for the binaries.
 
   == DEPENDENCIES:==
- 	1) tor 	 	 	   --> version 0.4.6.7 or earlier - https://www.torproject.org/ - https://github.com/torproject/tor
- 	2) privoxy 	 	   --> version 3.0.26  or earlier - http://www.privoxy.org/
- 	3) haproxy 	 	   --> version 1.7.5-2 or earlier - https://www.haproxy.org/
- 	4) proxychains-ng  --> version 4.13-4	 	or earlier - https://sourceforge.net/projects/proxychains/
- 	5) expect		   --> version 5.45	or earlier - https://sourceforge.net/projects/expect/
-	6) dnsdist 		   --> version 1.1.0	or earlier - https://dnsdist.org/index.html
+ 	1) tor 	 	 	   --> version 0.4.9.11 (Debian bookworm) - https://www.torproject.org/ - https://github.com/torproject/tor
+ 	2) privoxy 	 	   --> version 3.0.34  (Debian bookworm) - http://www.privoxy.org/
+ 	3) haproxy 	 	   --> version 2.6.12  (Debian bookworm) - https://www.haproxy.org/
+ 	4) proxychains-ng  --> version 4.16  (Debian bookworm) - https://sourceforge.net/projects/proxychains/
+ 	5) expect		   --> version 5.45.4	 (Debian bookworm) - https://sourceforge.net/projects/expect/
+	6) dnsdist 		   --> version 1.7.3   (Debian bookworm) - https://dnsdist.org/index.html
 " | more
 exit 1
 }

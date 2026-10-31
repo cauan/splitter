@@ -32,12 +32,12 @@
 #
 #
 # 	== DEPENDENCIES:==
-# 	1) tor 	 	 	       --> version 0.4.6.7 or earlier  - https://www.torproject.org/ - https://github.com/torproject/tor
-# 	2) privoxy 	 	     --> version 3.0.26  or earlier  - http://www.privoxy.org/
-# 	3) haproxy 	 	     --> version 2.0 or earlier      - https://www.haproxy.org/
-# 	4) proxychains-ng  --> version 4.13-4  or earlier  - https://sourceforge.net/projects/proxychains/
-# 	5) expect		       --> version 5.45	   or earlier  - https://sourceforge.net/projects/expect/
-#	  6) dnsdist 		     --> version 1.1.0   or earlier  - https://dnsdist.org/index.html
+# 	1) tor 	 	 	       --> version 0.4.9.11 (Debian bookworm) - https://www.torproject.org/ - https://github.com/torproject/tor
+# 	2) privoxy 	 	     --> version 3.0.34  (Debian bookworm) - http://www.privoxy.org/
+# 	3) haproxy 	 	     --> version 2.6.12  (Debian bookworm) - https://www.haproxy.org/
+# 	4) proxychains-ng  --> version 4.16  (Debian bookworm) - https://sourceforge.net/projects/proxychains/
+# 	5) expect		       --> version 5.45.4	 (Debian bookworm) - https://sourceforge.net/projects/expect/
+#	  6) dnsdist 		     --> version 1.7.3   (Debian bookworm)  - https://dnsdist.org/index.html
 
 ================================================================================
 

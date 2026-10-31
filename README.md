@@ -37,11 +37,12 @@ systems and multi-user networks.”[34]
 
 
 ###  == DEPENDENCIES:== 
-    - 1. tor          --> version 0.3.3.6 or earlier - https://www.torproject.org/
-    - 2. privoxy      --> version 3.0.26  or earlier - http://www.privoxy.org/
-    - 3. haproxy      --> version 1.7.5-2 or earlier - https://www.haproxy.org/
-    - 4. proxychains  --> version 3.1     or earlier - https://sourceforge.net/projects/proxychains/
-    - 5. expect       --> version 5.45    or earlier - https://sourceforge.net/projects/expect/
+    - 1. tor          --> version 0.4.9.11 (Debian bookworm) - https://www.torproject.org/
+    - 2. privoxy      --> version 3.0.34  (Debian bookworm) - http://www.privoxy.org/
+    - 3. haproxy      --> version 2.6.12  (Debian bookworm) - https://www.haproxy.org/
+    - 4. proxychains  --> version 4.16    (Debian bookworm) - https://sourceforge.net/projects/proxychains/
+    - 5. expect       --> version 5.45.4  (Debian bookworm) - https://sourceforge.net/projects/expect/
+    - 6. dnsdist      --> version 1.7.3   (Debian bookworm) - https://dnsdist.org/
 
 
 
@@ -122,7 +123,7 @@ The options for the **TOR NODE/RELAY enforcing** are:
 
 - **ENTRY**: Sets a specific country as ENTRY NODE and will use a different country as EXIT relay. This mode provides the best security for the user and it’s considered the default enforcing mode inside the context of SPLITTER solution.[27]
 
-The load balancing algorithm for HAPROXY in this mode is Round Robin.[36]
+The load balancing algorithm for HAPROXY in this mode is Least Connections (leastconn) — the author-intended Round Robin never shipped, and leastconn enforces the "no concurrent session on the same TOR circuit" invariant more strictly.[36]
 Considering a specific country is enforced for TOR ENTRY node, the SPLITTER will select another random country from the list of countries defined by the user as TOR
 EXIT node, but never the same country already defined to be used as TOR ENTRY node.
 
@@ -132,7 +133,7 @@ By enforcing this rule, the SPLITTER is _controlling_ the TOR algorithm and its 
 
 - **EXIT**: Sets a specific country as EXIT NODE and will use a different country as ENTRY relay. This option gives the user the control of the EXIT relays and could be used to bypass GeoIP protections.[29] 
 For example, this option is very suitable when you need to make sure that each request will hit the destination through a different country or the same country, depending on the number of countries each TOR instance can use.
-The load balancing algorithm for HAPROXY in this mode is Round Robin.[36]
+The load balancing algorithm for HAPROXY in this mode is Least Connections (leastconn) — the author-intended Round Robin never shipped, and leastconn enforces the "no concurrent session on the same TOR circuit" invariant more strictly.[36]
 
 **A more specific SPLITTER EXIT mode user case:**
 
@@ -158,7 +159,7 @@ The SPLITTER is using HAPROXY to perform a health-check of the established TOR c
 
 The requests are forwarded to another TOR instance until a fast, stable and reliable circuit be created in the previous instance considered down. The user can specify how many errors are necessary to consider one TOR instance as down and how many successful requests are necessary to consider it up again.
 
-To difficult the correlation, the SPLITTER is using a random order of TOR instances inside HAPROXY configuration file. The idea is to avoid that consecutive requests being sent through the same country when the users decide to use more than one tor instance per country. The interval between the checks can be random or fixed, the user will adjust it according to the speed which new TOR circuits are being and destroyed. By default, 12s is used as the fixed interval between the health-checks. However, we should consider that the health-check by its self can generate a pattern and the adversary can use this sequence of checks to track the user. In another hand, the health-check provide a better speed and stability allowing the user consume High Definition movies even using the TOR network.
+To difficult the correlation, the SPLITTER is using a random order of TOR instances inside HAPROXY configuration file. The idea is to avoid that consecutive requests being sent through the same country when the users decide to use more than one tor instance per country. The interval between the checks can be random or fixed, the user will adjust it according to the speed which new TOR circuits are being and destroyed. By default, 1s is used as the fixed interval between the health-checks — an end-to-end CONNECT probe to the health-check target through the privoxy→TOR chain (a backend is marked DOWN after HEALTH_CHECK_MAX_FAIL consecutive failures). However, we should consider that the health-check by its self can generate a pattern and the adversary can use this sequence of checks to track the user. In another hand, the health-check provide a better speed and stability allowing the user consume High Definition movies even using the TOR network.
 
 ![SPLITTER - HAPROXY HEALTH CHECK](https://github.com/renersistemas/splitter/blob/master/04_HAPROXY_HEALTH_CHECK.png)
 
