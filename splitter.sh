@@ -91,6 +91,11 @@ source boot_tor_instances.func        #Configures and start the TOR and PRIVOXY 
 #################################                   #################################
 #####################################################################################
 
+# 0) Sanitise the environment: a login shell may have sourced stale proxy variables
+#    pointing at wrong ports/schemes (see the .bashrc block in step 13). The splitter
+#    process tree must never inherit them; interactive shells get correct values later.
+unset http_proxy https_proxy ftp_proxy rsync_proxy all_proxy ALL_PROXY HTTP_PROXY HTTPS_PROXY FTP_PROXY RSYNC_PROXY no_proxy NO_PROXY
+
 # 1) Start the script showing the banner
 banner
 
@@ -175,14 +180,17 @@ ${HAPROXY_PATH} -f "${MASTER_PROXY_CFG}" > /dev/null 2>&1 &
 echo "setServerPolicy(leastOutstanding)" >> "${TOR_TEMP_FILES}/dnsdist.conf"
 
 # 13) Setting proxy to the system
-cat /home/${USER_ID}/.bashrc | grep -v "SPLITTER" | grep -v "no_proxy" | grep -v "all_proxy" | grep -v "http_proxy" | grep -v "https_proxy" | grep -v "ftp_proxy" | grep -v "rsync_proxy" > .bashrc_temp
+#Preserve the user's original .bashrc content; only the SPLITTER-managed proxy lines are replaced.
+#Write the sanitised copy to TOR_TEMP_FILES (a relative path here used to orphan it in /splitter
+#and the mv below then silently destroyed the user's original .bashrc content).
+cat /home/${USER_ID}/.bashrc | grep -v "SPLITTER" | grep -v "no_proxy" | grep -v "all_proxy" | grep -v "http_proxy" | grep -v "https_proxy" | grep -v "ftp_proxy" | grep -v "rsync_proxy" > "${TOR_TEMP_FILES}/.bashrc_temp"
 echo "##### CREATED BY SPLITTER #####" >> "${TOR_TEMP_FILES}/.bashrc_temp"
 #echo "export no_proxy=${DO_NOT_PROXY}" >> "${TOR_TEMP_FILES}/.bashrc_temp"
-echo "export all_proxy=http://127.0.0.1:${MASTER_PROXY_SOCKS_PORT}" >> "${TOR_TEMP_FILES}/.bashrc_temp"
-echo "export http_proxy=http://127.0.0.1:${MASTER_PROXY_SOCKS_PORT}" >> "${TOR_TEMP_FILES}/.bashrc_temp"
-echo "export https_proxy=https://127.0.0.1:${MASTER_PROXY_SOCKS_PORT}" >> "${TOR_TEMP_FILES}/.bashrc_temp"
-echo "export ftp_proxy=http://127.0.0.1:${MASTER_PROXY_SOCKS_PORT}" >> "${TOR_TEMP_FILES}/.bashrc_temp"
-echo "export rsync_proxy=http://127.0.0.1:${MASTER_PROXY_SOCKS_PORT}" >> "${TOR_TEMP_FILES}/.bashrc_temp"
+echo "export all_proxy=socks5h://127.0.0.1:${MASTER_PROXY_SOCKS_PORT}" >> "${TOR_TEMP_FILES}/.bashrc_temp"
+echo "export http_proxy=http://127.0.0.1:${MASTER_PROXY_HTTP_PORT}" >> "${TOR_TEMP_FILES}/.bashrc_temp"
+echo "export https_proxy=http://127.0.0.1:${MASTER_PROXY_HTTP_PORT}" >> "${TOR_TEMP_FILES}/.bashrc_temp"
+echo "export ftp_proxy=http://127.0.0.1:${MASTER_PROXY_HTTP_PORT}" >> "${TOR_TEMP_FILES}/.bashrc_temp"
+echo "export rsync_proxy=http://127.0.0.1:${MASTER_PROXY_HTTP_PORT}" >> "${TOR_TEMP_FILES}/.bashrc_temp"
 mv -f "${TOR_TEMP_FILES}/.bashrc_temp" /home/${USER_ID}/.bashrc
 
 
