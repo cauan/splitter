@@ -230,9 +230,16 @@ change_country_on_the_fly () {
 					rm -f "${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}/lock" 2>&1 > /dev/null
 					rm -f "${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}/state" 2>&1 > /dev/null
 					rm -f "${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}/tor_instance_summary.txt" 2>&1 > /dev/null
-					rm -R "${TOR_TEMP_FILES}/tor_${RUNNING_COUNTRY}"
-					mv "${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}" "${TOR_TEMP_FILES}/tor_${RUNNING_COUNTRY}_tmp"
-					mv "${TOR_TEMP_FILES}/tor_${RUNNING_COUNTRY}_tmp" "${TOR_TEMP_FILES}/tor_${RUNNING_COUNTRY}"
+					#Retire the old per-country cache dir only when the previous country is known.
+					#An empty RUNNING_COUNTRY (summary line missing mid-rotation) used to produce
+					#a stray tor_ dir here; keep the kills + state cleanup, then retire per case.
+					if [ "${RUNNING_COUNTRY}" != "" ]; then
+						rm -R "${TOR_TEMP_FILES}/tor_${RUNNING_COUNTRY}"
+						mv "${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}" "${TOR_TEMP_FILES}/tor_${RUNNING_COUNTRY}_tmp"
+						mv "${TOR_TEMP_FILES}/tor_${RUNNING_COUNTRY}_tmp" "${TOR_TEMP_FILES}/tor_${RUNNING_COUNTRY}"
+					else
+						rm -Rf "${TOR_TEMP_FILES}/tor${TOR_CURRENT_INSTANCE}"
+					fi
 
 				fi
 

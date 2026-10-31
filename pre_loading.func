@@ -61,6 +61,9 @@ http 127.0.0.1 ${MASTER_PROXY_HTTP_PORT}" > ${PROXYCHAINS_FILE}
 ## PID,INSTANCE,COUNTRY,CFG_FILE
 echo > "${TOR_TEMP_FILES}/instances_countries_list.txt"
 
+#Hygiene: remove a stray tor_ dir left by the old empty-country rotation race.
+rm -Rf "${TOR_TEMP_FILES}/tor_" 2> /dev/null
+
 #Cleaning the haproxy backend files
 echo > "${TOR_TEMP_FILES}/haproxy_socks_backend.txt"
 echo > "${TOR_TEMP_FILES}/haproxy_http_backend.txt"
