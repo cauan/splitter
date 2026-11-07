@@ -242,7 +242,7 @@ forward-socks5t / ${LISTEN_ADDR}:${TOR_CURRENT_SOCKS_PORT} ." > "${PRIVOXY_FILE}
 
 		#HAPROXY Appending Config
 
-		echo "    server TOR_SOCKS_INSTANCE_${PRIVOXY_CURRENT_INSTANCE} ${LISTEN_ADDR}:${TOR_CURRENT_SOCKS_PORT} check inter ${HEALTH_CHECK_INTERVAL_SOCKS}s fall ${HEALTH_CHECK_MAX_FAIL} rise ${HEALTH_CHECK_MININUM_SUCESS_SOCKS} minconn 1 maxconn ${MAX_CONCURRENT_REQUEST} resolvers tor_dns" >> "${TOR_TEMP_FILES}/haproxy_socks_backend.txt"
+		echo "    server TOR_SOCKS_INSTANCE_${PRIVOXY_CURRENT_INSTANCE} ${LISTEN_ADDR}:${TOR_CURRENT_SOCKS_PORT} check port ${PRIVOXY_CURRENT_PORT} inter ${HEALTH_CHECK_INTERVAL_SOCKS}s fall ${HEALTH_CHECK_MAX_FAIL} rise ${HEALTH_CHECK_MININUM_SUCESS_SOCKS} minconn 1 maxconn ${MAX_CONCURRENT_REQUEST} resolvers tor_dns" >> "${TOR_TEMP_FILES}/haproxy_socks_backend.txt"
 
 		#### Checking the full connection -- ovserver layer7 -- option
 		#echo "    server TOR_HTTP_SOCKS_INSTANCE_${PRIVOXY_CURRENT_INSTANCE} ${PRIVOXY_LISTEN}:${PRIVOXY_CURRENT_PORT} check inter ${HEALTH_CHECK_INTERVAL}s fall ${HEALTH_CHECK_MAX_FAIL} rise ${HEALTH_CHECK_MININUM_SUCESS} observe layer7 minconn 1 maxconn ${MAX_CONCURRENT_REQUEST} resolvers tor_dns" >> "${TOR_TEMP_FILES}/haproxy_http_backend.txt"

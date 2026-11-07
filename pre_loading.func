@@ -140,7 +140,9 @@ backend TOR_SOCKS_INSTANCES
 	  echo " "
   	fi
     )
-    option tcp-check
+    option httpchk
+    http-check send meth CONNECT uri ${HEALTH_CHECK_HOST}:${HEALTH_CHECK_PORT} ver HTTP/1.1 hdr Host ${HEALTH_CHECK_HOST}:${HEALTH_CHECK_PORT}
+    http-check expect status 200
 " > "${TOR_TEMP_FILES}/haproxy_TOR_SOCKS_PROXY.txt"
 
 #This File holds the HAProxy Backend HTTP Proxies
