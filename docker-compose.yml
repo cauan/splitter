@@ -7,7 +7,7 @@ services:
         # -re exit pins the EXIT countries (GeoIP-bypass use case: target always sees one of
         # your chosen countries). For the paper's security default use "-re entry" instead:
         # entry/guard countries pinned, exits roam over the other accepted countries.
-        command: -i 1 -c 8 -re exit
+        command: -i 2 -c 10 -re exit
         sysctls:
             - net.ipv6.conf.all.disable_ipv6=1
         # OPERATOR CHOICE: publishing on 0.0.0.0 exposes an UNAUTHENTICATED Tor open proxy
